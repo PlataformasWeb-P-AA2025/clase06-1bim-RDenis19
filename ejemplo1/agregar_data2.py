@@ -1,31 +1,22 @@
 from sqlalchemy.orm import sessionmaker
-import csv
-
 from crear_base import Saludo2
 from configuracion import engine
+import csv 
 
+# Crear sesión
 Session = sessionmaker(bind=engine)
 session = Session()
 
-# se crea un objeto de tipo
-# Saludo
+# Abrir el csv y leerlo 
+with open('data/saludos_mundo.csv', newline='', encoding='utf-8') as archivo:
+    lector = csv.DictReader(archivo, delimiter='|')
+    for fila in lector:
+        saludo = Saludo2(
+            mensaje=fila['saludo'],
+            tipo=fila['tipo'],
+            origen=fila['origen']
+        )
+        session.add(saludo)
 
-miSaludo = Saludo2()
-miSaludo.mensaje = "Hola que tal"
-miSaludo.tipo = "informal"
-
-miSaludo2 = Saludo2()
-miSaludo2.mensaje = "Buenas tardes"
-miSaludo2.tipo = "formal"
-
-
-# se agrega el objeto miSaludo
-# a la entidad Saludo a la sesión
-# a la espera de un commit
-# para agregar un registro a la base de
-# datos demobase.db
-session.add(miSaludo2)
-
-# se confirma las transacciones
+# Confirmar transacción
 session.commit()
-

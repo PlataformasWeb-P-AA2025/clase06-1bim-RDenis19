@@ -3,15 +3,15 @@ from sqlalchemy.orm import sessionmaker
 from crear_base import Saludo2
 from configuracion import engine
 
-# Crear sesión
+# Crear sesión 
 Session = sessionmaker(bind=engine)
 session = Session()
 
-# Consultar docentes
+# Consultar saludos
 saludos2 = session.query(Saludo2).all()
 
 # Mostrar con Streamlit
-st.title("Presentación de todos los Saludos")
+st.title("Presentación de todos los Saludos ")
 
 for saludo2 in saludos2:
     st.write(saludo2)
